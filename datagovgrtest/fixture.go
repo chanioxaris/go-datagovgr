@@ -8,6 +8,7 @@ import (
 	"github.com/chanioxaris/go-datagovgr/api"
 	"github.com/chanioxaris/go-datagovgr/datagovgr"
 	internalclient "github.com/chanioxaris/go-datagovgr/internal/client"
+	"github.com/chanioxaris/go-datagovgr/types"
 )
 
 const (
@@ -35,6 +36,14 @@ type fixtureURLPaths struct {
 	IndicatorsAndStatistics   string
 	InternetTraffic           string
 	UnemploymentClaims        string
+}
+
+type mockData struct {
+	ElectorsByAge             []*types.ElectorsByAge
+	ElectorsByRegionAndGender []*types.ElectorsByRegionAndGender
+	IndicatorsAndStatistics   []*types.IndicatorsAndStatistics
+	InternetTraffic           []*types.InternetTraffic
+	UnemploymentClaims        []*types.UnemploymentClaims
 }
 
 func NewFixture(t *testing.T) *Fixture {
@@ -70,4 +79,12 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 		InternetTraffic:           "/internet_traffic",
 		UnemploymentClaims:        "/oaed_unemployment",
 	}
+}
+
+func newMockData(t *testing.T) *mockData {
+	t.Helper()
+
+	var data mockData
+	gofakeit.Struct(&data)
+	return &data
 }
