@@ -6,14 +6,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/chanioxaris/go-datagovgr/api"
 	"github.com/chanioxaris/go-datagovgr/datagovgrtest"
-	"github.com/chanioxaris/go-datagovgr/internal/client"
 	"github.com/jarcoal/httpmock"
 )
 
 func TestTechnology_InternetTraffic_Success(t *testing.T) {
-	mockData := datagovgrtest.MockInternetTrafficSlice(5)
+	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
@@ -21,23 +19,21 @@ func TestTechnology_InternetTraffic_Success(t *testing.T) {
 	httpmock.RegisterResponder(
 		http.MethodGet,
 		"/internet_traffic",
-		httpmock.NewJsonResponderOrPanic(http.StatusOK, mockData),
+		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.InternetTraffic),
 	)
 
-	c := client.New(http.DefaultClient, "https://test.com", "test-token")
-	technology := api.NewTechnology(c)
-
-	got, err := technology.InternetTraffic()
+	got, err := fixture.Technology.InternetTraffic()
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
 
-	if !reflect.DeepEqual(got, mockData) {
-		t.Fatalf("Expected data %+v, but got %+v", mockData, got)
+	if !reflect.DeepEqual(got, fixture.MockData.InternetTraffic) {
+		t.Fatalf("Expected data %+v, but got %+v", fixture.MockData.InternetTraffic, got)
 	}
 }
 
 func TestTechnology_InternetTraffic_Error(t *testing.T) {
+	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
 	httpmock.Activate()
@@ -49,10 +45,7 @@ func TestTechnology_InternetTraffic_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	c := client.New(http.DefaultClient, "https://test.com", "test-token")
-	technology := api.NewTechnology(c)
-
-	_, err := technology.InternetTraffic()
+	_, err := fixture.Technology.InternetTraffic()
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}

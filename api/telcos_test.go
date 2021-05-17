@@ -6,14 +6,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/chanioxaris/go-datagovgr/api"
 	"github.com/chanioxaris/go-datagovgr/datagovgrtest"
-	"github.com/chanioxaris/go-datagovgr/internal/client"
 	"github.com/jarcoal/httpmock"
 )
 
 func TestTelcos_IndicatorsAndStatistics_Success(t *testing.T) {
-	mockData := datagovgrtest.MockIndicatorsAndStatisticsSlice(3)
+	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
@@ -21,23 +19,21 @@ func TestTelcos_IndicatorsAndStatistics_Success(t *testing.T) {
 	httpmock.RegisterResponder(
 		http.MethodGet,
 		"/eett_telecom_indicators",
-		httpmock.NewJsonResponderOrPanic(http.StatusOK, mockData),
+		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.IndicatorsAndStatistics),
 	)
 
-	c := client.New(http.DefaultClient, "https://test.com", "test-token")
-	telcos := api.NewTelcos(c)
-
-	got, err := telcos.IndicatorsAndStatistics()
+	got, err := fixture.Telcos.IndicatorsAndStatistics()
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
 
-	if !reflect.DeepEqual(got, mockData) {
-		t.Fatalf("Expected data %+v, but got %+v", mockData, got)
+	if !reflect.DeepEqual(got, fixture.MockData.IndicatorsAndStatistics) {
+		t.Fatalf("Expected data %+v, but got %+v", fixture.MockData.IndicatorsAndStatistics, got)
 	}
 }
 
 func TestTelcos_IndicatorsAndStatistics_Error(t *testing.T) {
+	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
 	httpmock.Activate()
@@ -49,10 +45,7 @@ func TestTelcos_IndicatorsAndStatistics_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	c := client.New(http.DefaultClient, "https://test.com", "test-token")
-	telcos := api.NewTelcos(c)
-
-	_, err := telcos.IndicatorsAndStatistics()
+	_, err := fixture.Telcos.IndicatorsAndStatistics()
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}
