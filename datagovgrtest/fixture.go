@@ -25,25 +25,34 @@ type Fixture struct {
 }
 
 type fixtureAPI struct {
+	Education  *api.Education
 	Society    *api.Society
 	Technology *api.Technology
 	Telcos     *api.Telcos
 }
 
 type fixtureURLPaths struct {
-	ElectorsByAge             string
-	ElectorsByRegionAndGender string
-	IndicatorsAndStatistics   string
-	InternetTraffic           string
-	UnemploymentClaims        string
+	AtlasInternshipStatistics     string
+	ElectorsByAge                 string
+	ElectorsByRegionAndGender     string
+	EudoksosRequestsAndDeliveries string
+	IndicatorsAndStatistics       string
+	InternetTraffic               string
+	StudentsBySchool              string
+	UnemploymentClaims            string
+	UniversityTeachingStaff       string
 }
 
 type mockData struct {
-	ElectorsByAge             []*types.ElectorsByAge
-	ElectorsByRegionAndGender []*types.ElectorsByRegionAndGender
-	IndicatorsAndStatistics   []*types.IndicatorsAndStatistics
-	InternetTraffic           []*types.InternetTraffic
-	UnemploymentClaims        []*types.UnemploymentClaims
+	AtlasInternshipStatistics     []*types.AtlasInternshipStatistics
+	ElectorsByAge                 []*types.ElectorsByAge
+	ElectorsByRegionAndGender     []*types.ElectorsByRegionAndGender
+	EudoksosRequestsAndDeliveries []*types.EudoksosRequestsAndDeliveries
+	IndicatorsAndStatistics       []*types.IndicatorsAndStatistics
+	InternetTraffic               []*types.InternetTraffic
+	StudentsBySchool              []*types.StudentsBySchool
+	UnemploymentClaims            []*types.UnemploymentClaims
+	UniversityTeachingStaff       []*types.UniversityTeachingStaff
 }
 
 func NewFixture(t *testing.T) *Fixture {
@@ -64,6 +73,7 @@ func NewFixture(t *testing.T) *Fixture {
 func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 	t.Helper()
 	return &fixtureAPI{
+		Education:  api.NewEducation(c),
 		Society:    api.NewSociety(c),
 		Technology: api.NewTechnology(c),
 		Telcos:     api.NewTelcos(c),
@@ -73,11 +83,15 @@ func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 	t.Helper()
 	return &fixtureURLPaths{
-		ElectorsByAge:             "/minint_election_age",
-		ElectorsByRegionAndGender: "/minint_election_distribution",
-		IndicatorsAndStatistics:   "/eett_telecom_indicators",
-		InternetTraffic:           "/internet_traffic",
-		UnemploymentClaims:        "/oaed_unemployment",
+		AtlasInternshipStatistics:     "/grnet_atlas",
+		ElectorsByAge:                 "/minint_election_age",
+		ElectorsByRegionAndGender:     "/minint_election_distribution",
+		EudoksosRequestsAndDeliveries: "/grnet_eudoxus",
+		IndicatorsAndStatistics:       "/eett_telecom_indicators",
+		InternetTraffic:               "/internet_traffic",
+		StudentsBySchool:              "/minedu_students_school",
+		UnemploymentClaims:            "/oaed_unemployment",
+		UniversityTeachingStaff:       "/minedu_dep",
 	}
 }
 

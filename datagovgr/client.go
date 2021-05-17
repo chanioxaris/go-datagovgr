@@ -11,6 +11,7 @@ const baseURL = "https://data.gov.gr/api/v1/query"
 
 // Client holds available data.gov.gr API endpoints.
 type Client struct {
+	Education  *api.Education
 	Society    *api.Society
 	Technology *api.Technology
 	Telcos     *api.Telcos
@@ -21,6 +22,7 @@ func NewClient(apiToken string) *Client {
 	internalClient := client.New(http.DefaultClient, baseURL, apiToken)
 
 	return &Client{
+		Education:  api.NewEducation(internalClient),
 		Society:    api.NewSociety(internalClient),
 		Technology: api.NewTechnology(internalClient),
 		Telcos:     api.NewTelcos(internalClient),
