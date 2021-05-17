@@ -24,13 +24,17 @@ type Fixture struct {
 }
 
 type fixtureAPI struct {
+	Society    *api.Society
 	Technology *api.Technology
 	Telcos     *api.Telcos
 }
 
 type fixtureURLPaths struct {
-	InternetTraffic         string
-	IndicatorsAndStatistics string
+	ElectorsByAge             string
+	ElectorsByRegionAndGender string
+	IndicatorsAndStatistics   string
+	InternetTraffic           string
+	UnemploymentClaims        string
 }
 
 func NewFixture(t *testing.T) *Fixture {
@@ -51,6 +55,7 @@ func NewFixture(t *testing.T) *Fixture {
 func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 	t.Helper()
 	return &fixtureAPI{
+		Society:    api.NewSociety(c),
 		Technology: api.NewTechnology(c),
 		Telcos:     api.NewTelcos(c),
 	}
@@ -59,7 +64,10 @@ func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 	t.Helper()
 	return &fixtureURLPaths{
-		InternetTraffic:         "/internet_traffic",
-		IndicatorsAndStatistics: "/eett_telecom_indicators",
+		ElectorsByAge:             "/minint_election_age",
+		ElectorsByRegionAndGender: "/minint_election_distribution",
+		IndicatorsAndStatistics:   "/eett_telecom_indicators",
+		InternetTraffic:           "/internet_traffic",
+		UnemploymentClaims:        "/oaed_unemployment",
 	}
 }
