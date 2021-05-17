@@ -7,13 +7,13 @@ import (
 	"testing"
 
 	"github.com/chanioxaris/go-datagovgr/api"
+	"github.com/chanioxaris/go-datagovgr/datagovgrtest"
 	"github.com/chanioxaris/go-datagovgr/internal/client"
-	"github.com/chanioxaris/go-datagovgr/testdata"
 	"github.com/jarcoal/httpmock"
 )
 
 func TestTechnology_InternetTraffic_Success(t *testing.T) {
-	mockData := testdata.MockInternetTrafficSlice(5)
+	mockData := datagovgrtest.MockInternetTrafficSlice(5)
 
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()

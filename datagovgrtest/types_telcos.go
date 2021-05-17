@@ -1,4 +1,4 @@
-package testdata
+package datagovgrtest
 
 import (
 	"github.com/brianvoe/gofakeit/v6"

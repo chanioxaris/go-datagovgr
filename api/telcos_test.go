@@ -7,13 +7,13 @@ import (
 	"testing"
 
 	"github.com/chanioxaris/go-datagovgr/api"
+	"github.com/chanioxaris/go-datagovgr/datagovgrtest"
 	"github.com/chanioxaris/go-datagovgr/internal/client"
-	"github.com/chanioxaris/go-datagovgr/testdata"
 	"github.com/jarcoal/httpmock"
 )
 
 func TestTelcos_IndicatorsAndStatistics_Success(t *testing.T) {
-	mockData := testdata.MockIndicatorsAndStatisticsSlice(3)
+	mockData := datagovgrtest.MockIndicatorsAndStatisticsSlice(3)
 
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
