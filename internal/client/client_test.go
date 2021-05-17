@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/chanioxaris/go-datagovgr/internal/client"
+	"github.com/chanioxaris/go-datagovgr/datagovgrtest"
 	"github.com/jarcoal/httpmock"
 )
 
@@ -16,9 +16,11 @@ type testPayload struct {
 }
 
 func TestClient_NewRequestGET_Success(t *testing.T) {
-	c := client.New(http.DefaultClient, "https://test.com", "test-token")
+	fixture := datagovgrtest.NewFixture(t)
+	expectedHeaderValue := fmt.Sprintf("Token %s", fixture.APIToken)
+	expectedURLHost := strings.TrimPrefix(fixture.BaseURL, "https://")
 
-	got, err := c.NewRequestGET("test-path")
+	got, err := fixture.InternalClient.NewRequestGET("test-path")
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -31,12 +33,12 @@ func TestClient_NewRequestGET_Success(t *testing.T) {
 		t.Fatal("Expected Authorization header to have been set")
 	}
 
-	if headerValue := got.Header.Get("Authorization"); headerValue != "Token test-token" {
-		t.Fatalf(`Expected Authorization header value "Token test-token", but got "%v"`, headerValue)
+	if headerValue := got.Header.Get("Authorization"); headerValue != expectedHeaderValue {
+		t.Fatalf(`Expected Authorization header value "%s", but got "%v"`, expectedHeaderValue, headerValue)
 	}
 
-	if urlHost := got.URL.Host; urlHost != "test.com" {
-		t.Fatalf(`Expected url host "test.com", but got "%v"`, urlHost)
+	if urlHost := got.URL.Host; urlHost != expectedURLHost {
+		t.Fatalf(`Expected url host "%s", but got "%v"`, expectedURLHost, urlHost)
 	}
 
 	if urlPath := got.URL.Path; urlPath != "/test-path" {
@@ -45,6 +47,7 @@ func TestClient_NewRequestGET_Success(t *testing.T) {
 }
 
 func TestClient_MakeRequest_Success(t *testing.T) {
+	fixture := datagovgrtest.NewFixture(t)
 	expectedPayload := testPayload{Author: "chanioxaris"}
 
 	httpmock.Activate()
@@ -52,16 +55,14 @@ func TestClient_MakeRequest_Success(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		http.MethodGet,
-		"https://test.com/test-path",
+		fmt.Sprintf("%s/test-path", fixture.BaseURL),
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, expectedPayload),
 	)
 
-	c := client.New(http.DefaultClient, "https://test.com", "test-token")
-
-	req, _ := c.NewRequestGET("test-path")
+	req, _ := fixture.InternalClient.NewRequestGET("test-path")
 
 	payload := testPayload{}
-	if err := c.MakeRequest(req, &payload); err != nil {
+	if err := fixture.InternalClient.MakeRequest(req, &payload); err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
 
@@ -71,6 +72,8 @@ func TestClient_MakeRequest_Success(t *testing.T) {
 }
 
 func TestClient_MakeRequest_Error(t *testing.T) {
+	fixture := datagovgrtest.NewFixture(t)
+
 	tests := []struct {
 		name          string
 		path          string
@@ -101,15 +104,14 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			httpmock.RegisterResponder(
 				http.MethodGet,
-				fmt.Sprintf("https://test.com/%s", tt.path),
+				fmt.Sprintf("%s/%s", fixture.BaseURL, tt.path),
 				httpmock.NewStringResponder(tt.statusCode, tt.body),
 			)
 
-			c := client.New(http.DefaultClient, "https://test.com", "test-token")
-			req, _ := c.NewRequestGET(tt.path)
+			req, _ := fixture.InternalClient.NewRequestGET(tt.path)
 
 			payload := testPayload{}
-			err := c.MakeRequest(req, &payload)
+			err := fixture.InternalClient.MakeRequest(req, &payload)
 			if err == nil {
 				t.Fatal("Expected error, but got nil")
 			}

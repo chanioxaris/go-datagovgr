@@ -16,7 +16,10 @@ const (
 	apiToken = "test-token"
 )
 
+// Fixture holds the necessary data to make testing easier.
 type Fixture struct {
+	BaseURL        string
+	APIToken       string
 	Client         *datagovgr.Client
 	InternalClient *internalclient.Client
 	API            *fixtureAPI
@@ -55,6 +58,7 @@ type mockData struct {
 	UniversityTeachingStaff       []*types.UniversityTeachingStaff
 }
 
+// NewFixture creates a new Fixture instance.
 func NewFixture(t *testing.T) *Fixture {
 	t.Helper()
 
@@ -62,6 +66,8 @@ func NewFixture(t *testing.T) *Fixture {
 	internalClient := internalclient.New(http.DefaultClient, baseURL, apiToken)
 
 	return &Fixture{
+		BaseURL:        baseURL,
+		APIToken:       apiToken,
 		Client:         datagovgr.NewClient(apiToken),
 		InternalClient: internalClient,
 		API:            newFixtureAPI(t, internalClient),
