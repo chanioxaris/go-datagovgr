@@ -18,11 +18,11 @@ func TestTechnology_InternetTraffic_Success(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		http.MethodGet,
-		"/internet_traffic",
+		fixture.URLPaths.InternetTraffic,
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.InternetTraffic),
 	)
 
-	got, err := fixture.Technology.InternetTraffic()
+	got, err := fixture.API.Technology.InternetTraffic()
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -41,11 +41,11 @@ func TestTechnology_InternetTraffic_Error(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		http.MethodGet,
-		"/internet_traffic",
+		fixture.URLPaths.InternetTraffic,
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.Technology.InternetTraffic()
+	_, err := fixture.API.Technology.InternetTraffic()
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}

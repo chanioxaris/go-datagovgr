@@ -7,14 +7,14 @@ import (
 	"github.com/chanioxaris/go-datagovgr/types"
 )
 
-type MockData struct {
+type mockData struct {
 	InternetTraffic         []*types.InternetTraffic
 	IndicatorsAndStatistics []*types.IndicatorsAndStatistics
 }
 
-func NewMockData(t *testing.T) *MockData {
+func newMockData(t *testing.T) *mockData {
 	t.Helper()
-	return &MockData{
+	return &mockData{
 		InternetTraffic:         MockInternetTrafficSlice(t, gofakeit.Number(1, 7)),
 		IndicatorsAndStatistics: MockIndicatorsAndStatisticsSlice(t, gofakeit.Number(1, 7)),
 	}

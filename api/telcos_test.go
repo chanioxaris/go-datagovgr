@@ -18,11 +18,11 @@ func TestTelcos_IndicatorsAndStatistics_Success(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		http.MethodGet,
-		"/eett_telecom_indicators",
+		fixture.URLPaths.IndicatorsAndStatistics,
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.IndicatorsAndStatistics),
 	)
 
-	got, err := fixture.Telcos.IndicatorsAndStatistics()
+	got, err := fixture.API.Telcos.IndicatorsAndStatistics()
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -41,11 +41,11 @@ func TestTelcos_IndicatorsAndStatistics_Error(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		http.MethodGet,
-		"/eett_telecom_indicators",
+		fixture.URLPaths.IndicatorsAndStatistics,
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.Telcos.IndicatorsAndStatistics()
+	_, err := fixture.API.Telcos.IndicatorsAndStatistics()
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}

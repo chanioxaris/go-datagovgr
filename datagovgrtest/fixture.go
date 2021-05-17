@@ -18,9 +18,19 @@ const (
 type Fixture struct {
 	Client         *datagovgr.Client
 	InternalClient *internalclient.Client
-	Technology     *api.Technology
-	Telcos         *api.Telcos
-	MockData       *MockData
+	API            *fixtureAPI
+	URLPaths       *fixtureURLPaths
+	MockData       *mockData
+}
+
+type fixtureAPI struct {
+	Technology *api.Technology
+	Telcos     *api.Telcos
+}
+
+type fixtureURLPaths struct {
+	InternetTraffic         string
+	IndicatorsAndStatistics string
 }
 
 func NewFixture(t *testing.T) *Fixture {
@@ -32,8 +42,24 @@ func NewFixture(t *testing.T) *Fixture {
 	return &Fixture{
 		Client:         datagovgr.NewClient(apiToken),
 		InternalClient: internalClient,
-		Technology:     api.NewTechnology(internalClient),
-		Telcos:         api.NewTelcos(internalClient),
-		MockData:       NewMockData(t),
+		API:            newFixtureAPI(t, internalClient),
+		URLPaths:       newFixtureURLPaths(t),
+		MockData:       newMockData(t),
+	}
+}
+
+func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
+	t.Helper()
+	return &fixtureAPI{
+		Technology: api.NewTechnology(c),
+		Telcos:     api.NewTelcos(c),
+	}
+}
+
+func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
+	t.Helper()
+	return &fixtureURLPaths{
+		InternetTraffic:         "/internet_traffic",
+		IndicatorsAndStatistics: "/eett_telecom_indicators",
 	}
 }
