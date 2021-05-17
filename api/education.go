@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+
 	internalclient "github.com/chanioxaris/go-datagovgr/internal/client"
 	"github.com/chanioxaris/go-datagovgr/types"
 )
@@ -16,8 +18,8 @@ func NewEducation(client *internalclient.Client) *Education {
 }
 
 // UniversityTeachingStaff retrieves data for the number of teaching staff by school and ranking.
-func (e *Education) UniversityTeachingStaff() ([]*types.UniversityTeachingStaff, error) {
-	req, err := e.client.NewRequestGET("minedu_dep")
+func (e *Education) UniversityTeachingStaff(ctx context.Context) ([]*types.UniversityTeachingStaff, error) {
+	req, err := e.client.NewRequestGET(ctx, "minedu_dep")
 	if err != nil {
 		return nil, err
 	}
@@ -31,8 +33,8 @@ func (e *Education) UniversityTeachingStaff() ([]*types.UniversityTeachingStaff,
 }
 
 // StudentsBySchool retrieves data for the number of students by school and gender.
-func (e *Education) StudentsBySchool() ([]*types.StudentsBySchool, error) {
-	req, err := e.client.NewRequestGET("minedu_students_school")
+func (e *Education) StudentsBySchool(ctx context.Context) ([]*types.StudentsBySchool, error) {
+	req, err := e.client.NewRequestGET(ctx, "minedu_students_school")
 	if err != nil {
 		return nil, err
 	}
@@ -46,8 +48,8 @@ func (e *Education) StudentsBySchool() ([]*types.StudentsBySchool, error) {
 }
 
 // AtlasInternshipStatistics retrieves annual statistics of internships through the Atlas system.
-func (e *Education) AtlasInternshipStatistics() ([]*types.AtlasInternshipStatistics, error) {
-	req, err := e.client.NewRequestGET("grnet_atlas")
+func (e *Education) AtlasInternshipStatistics(ctx context.Context) ([]*types.AtlasInternshipStatistics, error) {
+	req, err := e.client.NewRequestGET(ctx, "grnet_atlas")
 	if err != nil {
 		return nil, err
 	}
@@ -61,8 +63,8 @@ func (e *Education) AtlasInternshipStatistics() ([]*types.AtlasInternshipStatist
 }
 
 // EudoksosRequestsAndDeliveries retrieves statistics of requests and deliveries for books made through the Eudoxus system.
-func (e *Education) EudoksosRequestsAndDeliveries() ([]*types.EudoksosRequestsAndDeliveries, error) {
-	req, err := e.client.NewRequestGET("grnet_eudoxus")
+func (e *Education) EudoksosRequestsAndDeliveries(ctx context.Context) ([]*types.EudoksosRequestsAndDeliveries, error) {
+	req, err := e.client.NewRequestGET(ctx, "grnet_eudoxus")
 	if err != nil {
 		return nil, err
 	}

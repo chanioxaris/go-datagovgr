@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+
 	internalclient "github.com/chanioxaris/go-datagovgr/internal/client"
 	"github.com/chanioxaris/go-datagovgr/types"
 )
@@ -16,8 +18,8 @@ func NewTechnology(client *internalclient.Client) *Technology {
 }
 
 // InternetTraffic retrieves data for internet traffic in Greece by date.
-func (t *Technology) InternetTraffic() ([]*types.InternetTraffic, error) {
-	req, err := t.client.NewRequestGET("internet_traffic")
+func (t *Technology) InternetTraffic(ctx context.Context) ([]*types.InternetTraffic, error) {
+	req, err := t.client.NewRequestGET(ctx, "internet_traffic")
 	if err != nil {
 		return nil, err
 	}

@@ -1,11 +1,13 @@
 package client_test
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/chanioxaris/go-datagovgr/datagovgrtest"
 	"github.com/jarcoal/httpmock"
@@ -16,11 +18,12 @@ type testPayload struct {
 }
 
 func TestClient_NewRequestGET_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedHeaderValue := fmt.Sprintf("Token %s", fixture.APIToken)
 	expectedURLHost := strings.TrimPrefix(fixture.BaseURL, "https://")
 
-	got, err := fixture.InternalClient.NewRequestGET("test-path")
+	got, err := fixture.InternalClient.NewRequestGET(ctx, "test-path")
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -46,7 +49,22 @@ func TestClient_NewRequestGET_Success(t *testing.T) {
 	}
 }
 
+func TestClient_NewRequestGET_Error(t *testing.T) {
+	fixture := datagovgrtest.NewFixture(t)
+	expectedError := "nil Context"
+
+	_, err := fixture.InternalClient.NewRequestGET(nil, "test-path")
+	if err == nil {
+		t.Fatal("Expected error, but got nil")
+	}
+
+	if !strings.Contains(err.Error(), expectedError) {
+		t.Fatalf(`Expected error to contain "%v", but got "%v"`, expectedError, err)
+	}
+}
+
 func TestClient_MakeRequest_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedPayload := testPayload{Author: "chanioxaris"}
 
@@ -59,7 +77,7 @@ func TestClient_MakeRequest_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, expectedPayload),
 	)
 
-	req, _ := fixture.InternalClient.NewRequestGET("test-path")
+	req, _ := fixture.InternalClient.NewRequestGET(ctx, "test-path")
 
 	payload := testPayload{}
 	if err := fixture.InternalClient.MakeRequest(req, &payload); err != nil {
@@ -79,6 +97,7 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 		path          string
 		statusCode    int
 		body          string
+		ctx           context.Context
 		expectedError string
 	}{
 		{
@@ -86,6 +105,7 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 			path:          "unexpected-status-code",
 			statusCode:    http.StatusInternalServerError,
 			body:          "",
+			ctx:           context.Background(),
 			expectedError: fmt.Sprintf("unexpected status code: %v", http.StatusInternalServerError),
 		},
 		{
@@ -93,6 +113,7 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 			path:          "invalid-response-body",
 			statusCode:    http.StatusOK,
 			body:          `{"author": 13}`,
+			ctx:           context.Background(),
 			expectedError: "json: cannot unmarshal",
 		},
 	}
@@ -108,7 +129,7 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 				httpmock.NewStringResponder(tt.statusCode, tt.body),
 			)
 
-			req, _ := fixture.InternalClient.NewRequestGET(tt.path)
+			req, _ := fixture.InternalClient.NewRequestGET(tt.ctx, tt.path)
 
 			payload := testPayload{}
 			err := fixture.InternalClient.MakeRequest(req, &payload)
@@ -120,5 +141,37 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 				t.Fatalf(`Expected error to contain "%v", but got "%v"`, tt.expectedError, err)
 			}
 		})
+	}
+}
+
+func TestClient_MakeRequest_Error_Timeout(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*500)
+	defer cancel()
+
+	fixture := datagovgrtest.NewFixture(t)
+	expectedError := "context deadline exceeded"
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder(
+		http.MethodGet,
+		fmt.Sprintf("%s/test-path", fixture.BaseURL),
+		func(req *http.Request) (*http.Response, error) {
+			time.Sleep(time.Second * 1)
+			return httpmock.NewJsonResponse(http.StatusOK, testPayload{Author: "chanioxaris"})
+		},
+	)
+
+	req, _ := fixture.InternalClient.NewRequestGET(ctx, "test-path")
+
+	payload := testPayload{}
+	err := fixture.InternalClient.MakeRequest(req, &payload)
+	if err == nil {
+		t.Fatal("Expected error, but got nil")
+	}
+
+	if !strings.Contains(err.Error(), expectedError) {
+		t.Fatalf(`Expected error to contain "%v", but got "%v"`, expectedError, err)
 	}
 }

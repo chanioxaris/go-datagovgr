@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -24,9 +25,9 @@ func New(httpClient *http.Client, baseURL, apiToken string) *Client {
 }
 
 // NewRequestGET creates a new http.Request with GET method for provided path and applies required headers.
-func (c *Client) NewRequestGET(path string) (*http.Request, error) {
+func (c *Client) NewRequestGET(ctx context.Context, path string) (*http.Request, error) {
 	headers := map[string]string{"Authorization": fmt.Sprintf("Token %s", c.apiToken)}
-	return c.newRequest(http.MethodGet, path, nil, headers)
+	return c.newRequest(ctx, http.MethodGet, path, nil, headers)
 }
 
 // MakeRequest makes an http request and populates the proved payload with the http response body after decoding it.
@@ -50,8 +51,8 @@ func (c *Client) MakeRequest(req *http.Request, payload interface{}) error {
 	return nil
 }
 
-func (c *Client) newRequest(method, path string, body io.Reader, headers map[string]string) (*http.Request, error) {
-	req, err := http.NewRequest(method, fmt.Sprintf("%s/%s", c.baseURL, path), body)
+func (c *Client) newRequest(ctx context.Context, method, path string, body io.Reader, headers map[string]string) (*http.Request, error) {
+	req, err := http.NewRequestWithContext(ctx, method, fmt.Sprintf("%s/%s", c.baseURL, path), body)
 	if err != nil {
 		return nil, err
 	}

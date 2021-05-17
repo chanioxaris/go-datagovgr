@@ -1,6 +1,7 @@
 package api_test
 
 import (
+	"context"
 	"net/http"
 	"reflect"
 	"strings"
@@ -11,6 +12,7 @@ import (
 )
 
 func TestTechnology_InternetTraffic_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -22,7 +24,7 @@ func TestTechnology_InternetTraffic_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.InternetTraffic),
 	)
 
-	got, err := fixture.API.Technology.InternetTraffic()
+	got, err := fixture.API.Technology.InternetTraffic(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -33,6 +35,7 @@ func TestTechnology_InternetTraffic_Success(t *testing.T) {
 }
 
 func TestTechnology_InternetTraffic_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -45,7 +48,7 @@ func TestTechnology_InternetTraffic_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Technology.InternetTraffic()
+	_, err := fixture.API.Technology.InternetTraffic(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}

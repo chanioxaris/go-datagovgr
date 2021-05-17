@@ -1,6 +1,7 @@
 package api_test
 
 import (
+	"context"
 	"net/http"
 	"reflect"
 	"strings"
@@ -11,6 +12,7 @@ import (
 )
 
 func TestEducation_UniversityTeachingStaff_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -22,7 +24,7 @@ func TestEducation_UniversityTeachingStaff_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.UniversityTeachingStaff),
 	)
 
-	got, err := fixture.API.Education.UniversityTeachingStaff()
+	got, err := fixture.API.Education.UniversityTeachingStaff(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -33,6 +35,7 @@ func TestEducation_UniversityTeachingStaff_Success(t *testing.T) {
 }
 
 func TestEducation_UniversityTeachingStaff_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -45,7 +48,7 @@ func TestEducation_UniversityTeachingStaff_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Education.UniversityTeachingStaff()
+	_, err := fixture.API.Education.UniversityTeachingStaff(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}
@@ -56,6 +59,7 @@ func TestEducation_UniversityTeachingStaff_Error(t *testing.T) {
 }
 
 func TestEducation_StudentsBySchool_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -67,7 +71,7 @@ func TestEducation_StudentsBySchool_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.StudentsBySchool),
 	)
 
-	got, err := fixture.API.Education.StudentsBySchool()
+	got, err := fixture.API.Education.StudentsBySchool(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -78,6 +82,7 @@ func TestEducation_StudentsBySchool_Success(t *testing.T) {
 }
 
 func TestEducation_StudentsBySchool_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -90,7 +95,7 @@ func TestEducation_StudentsBySchool_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Education.StudentsBySchool()
+	_, err := fixture.API.Education.StudentsBySchool(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}
@@ -101,6 +106,7 @@ func TestEducation_StudentsBySchool_Error(t *testing.T) {
 }
 
 func TestEducation_AtlasInternshipStatistics_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -112,7 +118,7 @@ func TestEducation_AtlasInternshipStatistics_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.AtlasInternshipStatistics),
 	)
 
-	got, err := fixture.API.Education.AtlasInternshipStatistics()
+	got, err := fixture.API.Education.AtlasInternshipStatistics(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -123,6 +129,7 @@ func TestEducation_AtlasInternshipStatistics_Success(t *testing.T) {
 }
 
 func TestEducation_AtlasInternshipStatistics_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -135,7 +142,7 @@ func TestEducation_AtlasInternshipStatistics_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Education.AtlasInternshipStatistics()
+	_, err := fixture.API.Education.AtlasInternshipStatistics(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}
@@ -146,6 +153,7 @@ func TestEducation_AtlasInternshipStatistics_Error(t *testing.T) {
 }
 
 func TestEducation_EudoksosRequestsAndDeliveries_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -157,7 +165,7 @@ func TestEducation_EudoksosRequestsAndDeliveries_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.EudoksosRequestsAndDeliveries),
 	)
 
-	got, err := fixture.API.Education.EudoksosRequestsAndDeliveries()
+	got, err := fixture.API.Education.EudoksosRequestsAndDeliveries(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -168,6 +176,7 @@ func TestEducation_EudoksosRequestsAndDeliveries_Success(t *testing.T) {
 }
 
 func TestEducation_EudoksosRequestsAndDeliveries_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -180,7 +189,7 @@ func TestEducation_EudoksosRequestsAndDeliveries_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Education.EudoksosRequestsAndDeliveries()
+	_, err := fixture.API.Education.EudoksosRequestsAndDeliveries(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}

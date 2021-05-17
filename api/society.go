@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+
 	internalclient "github.com/chanioxaris/go-datagovgr/internal/client"
 	"github.com/chanioxaris/go-datagovgr/types"
 )
@@ -16,8 +18,8 @@ func NewSociety(client *internalclient.Client) *Society {
 }
 
 // UnemploymentClaims retrieves data for unemployment claims based on OAED.
-func (s *Society) UnemploymentClaims() ([]*types.UnemploymentClaims, error) {
-	req, err := s.client.NewRequestGET("oaed_unemployment")
+func (s *Society) UnemploymentClaims(ctx context.Context) ([]*types.UnemploymentClaims, error) {
+	req, err := s.client.NewRequestGET(ctx, "oaed_unemployment")
 	if err != nil {
 		return nil, err
 	}
@@ -31,8 +33,8 @@ func (s *Society) UnemploymentClaims() ([]*types.UnemploymentClaims, error) {
 }
 
 // ElectorsByAge retrieves data for electors by age.
-func (s *Society) ElectorsByAge() ([]*types.ElectorsByAge, error) {
-	req, err := s.client.NewRequestGET("minint_election_age")
+func (s *Society) ElectorsByAge(ctx context.Context) ([]*types.ElectorsByAge, error) {
+	req, err := s.client.NewRequestGET(ctx, "minint_election_age")
 	if err != nil {
 		return nil, err
 	}
@@ -46,8 +48,8 @@ func (s *Society) ElectorsByAge() ([]*types.ElectorsByAge, error) {
 }
 
 // ElectorsByRegionAndGender retrieves data for electors by region and gender.
-func (s *Society) ElectorsByRegionAndGender() ([]*types.ElectorsByRegionAndGender, error) {
-	req, err := s.client.NewRequestGET("minint_election_distribution")
+func (s *Society) ElectorsByRegionAndGender(ctx context.Context) ([]*types.ElectorsByRegionAndGender, error) {
+	req, err := s.client.NewRequestGET(ctx, "minint_election_distribution")
 	if err != nil {
 		return nil, err
 	}

@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+
 	internalclient "github.com/chanioxaris/go-datagovgr/internal/client"
 	"github.com/chanioxaris/go-datagovgr/types"
 )
@@ -16,8 +18,8 @@ func NewTelcos(client *internalclient.Client) *Telcos {
 }
 
 // IndicatorsAndStatistics retrieves indicators and statistics data for telecommunications in Greece.
-func (t *Telcos) IndicatorsAndStatistics() ([]*types.IndicatorsAndStatistics, error) {
-	req, err := t.client.NewRequestGET("eett_telecom_indicators")
+func (t *Telcos) IndicatorsAndStatistics(ctx context.Context) ([]*types.IndicatorsAndStatistics, error) {
+	req, err := t.client.NewRequestGET(ctx, "eett_telecom_indicators")
 	if err != nil {
 		return nil, err
 	}

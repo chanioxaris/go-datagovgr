@@ -1,6 +1,7 @@
 package api_test
 
 import (
+	"context"
 	"net/http"
 	"reflect"
 	"strings"
@@ -11,6 +12,7 @@ import (
 )
 
 func TestSociety_UnemploymentClaims_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -22,7 +24,7 @@ func TestSociety_UnemploymentClaims_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.UnemploymentClaims),
 	)
 
-	got, err := fixture.API.Society.UnemploymentClaims()
+	got, err := fixture.API.Society.UnemploymentClaims(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -33,6 +35,7 @@ func TestSociety_UnemploymentClaims_Success(t *testing.T) {
 }
 
 func TestSociety_UnemploymentClaims_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -45,7 +48,7 @@ func TestSociety_UnemploymentClaims_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Society.UnemploymentClaims()
+	_, err := fixture.API.Society.UnemploymentClaims(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}
@@ -56,6 +59,7 @@ func TestSociety_UnemploymentClaims_Error(t *testing.T) {
 }
 
 func TestSociety_ElectorsByAge_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -67,7 +71,7 @@ func TestSociety_ElectorsByAge_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.ElectorsByAge),
 	)
 
-	got, err := fixture.API.Society.ElectorsByAge()
+	got, err := fixture.API.Society.ElectorsByAge(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -78,6 +82,7 @@ func TestSociety_ElectorsByAge_Success(t *testing.T) {
 }
 
 func TestSociety_ElectorsByAge_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -90,7 +95,7 @@ func TestSociety_ElectorsByAge_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Society.ElectorsByAge()
+	_, err := fixture.API.Society.ElectorsByAge(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}
@@ -101,6 +106,7 @@ func TestSociety_ElectorsByAge_Error(t *testing.T) {
 }
 
 func TestSociety_ElectorsByRegionAndGender_Success(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
 	httpmock.Activate()
@@ -112,7 +118,7 @@ func TestSociety_ElectorsByRegionAndGender_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.ElectorsByRegionAndGender),
 	)
 
-	got, err := fixture.API.Society.ElectorsByRegionAndGender()
+	got, err := fixture.API.Society.ElectorsByRegionAndGender(ctx)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -123,6 +129,7 @@ func TestSociety_ElectorsByRegionAndGender_Success(t *testing.T) {
 }
 
 func TestSociety_ElectorsByRegionAndGender_Error(t *testing.T) {
+	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "unexpected status code"
 
@@ -135,7 +142,7 @@ func TestSociety_ElectorsByRegionAndGender_Error(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusInternalServerError, nil),
 	)
 
-	_, err := fixture.API.Society.ElectorsByRegionAndGender()
+	_, err := fixture.API.Society.ElectorsByRegionAndGender(ctx)
 	if err == nil {
 		t.Fatalf("Expected error, but got nil")
 	}
