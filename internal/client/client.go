@@ -29,6 +29,8 @@ func (c *Client) NewRequestGET(path string) (*http.Request, error) {
 	return c.newRequest(http.MethodGet, path, nil, headers)
 }
 
+// MakeRequest makes an http request and populates the proved payload with the http response body after decoding it.
+// Also verifies if the request was successful by checking the response status code.
 func (c *Client) MakeRequest(req *http.Request, payload interface{}) error {
 	resp, err := c.httpClient.Do(req)
 	if err != nil {

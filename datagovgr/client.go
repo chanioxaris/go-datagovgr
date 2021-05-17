@@ -12,6 +12,7 @@ const baseURL = "https://data.gov.gr/api/v1/query"
 // Client holds available data.gov.gr API endpoints.
 type Client struct {
 	Technology *api.Technology
+	Telcos     *api.Telcos
 }
 
 // NewClient creates a new Client instance. Requires an API token as input.
@@ -20,5 +21,6 @@ func NewClient(apiToken string) *Client {
 
 	return &Client{
 		Technology: api.NewTechnology(internalClient),
+		Telcos:     api.NewTelcos(internalClient),
 	}
 }
