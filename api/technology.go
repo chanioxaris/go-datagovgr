@@ -19,13 +19,8 @@ func NewTechnology(client *internalclient.Client) *Technology {
 
 // InternetTraffic retrieves data for internet traffic in Greece by date.
 func (t *Technology) InternetTraffic(ctx context.Context) ([]*types.InternetTraffic, error) {
-	req, err := t.client.NewRequestGET(ctx, "internet_traffic")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.InternetTraffic, 0)
-	if err := t.client.MakeRequest(req, &response); err != nil {
+	if err := t.client.MakeRequestGET(ctx, "internet_traffic", &response); err != nil {
 		return nil, err
 	}
 

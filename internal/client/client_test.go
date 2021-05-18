@@ -17,53 +17,7 @@ type testPayload struct {
 	Author string `json:"author"`
 }
 
-func TestClient_NewRequestGET_Success(t *testing.T) {
-	ctx := context.Background()
-	fixture := datagovgrtest.NewFixture(t)
-	expectedHeaderValue := fmt.Sprintf("Token %s", fixture.APIToken)
-	expectedURLHost := strings.TrimPrefix(fixture.BaseURL, "https://")
-
-	got, err := fixture.InternalClient.NewRequestGET(ctx, fixture.TestPath)
-	if err != nil {
-		t.Fatalf("Unexpected error %v", err)
-	}
-
-	if got.Method != http.MethodGet {
-		t.Fatalf(`Expected method "GET", but got "%v"`, got.Method)
-	}
-
-	if got.Header.Get("Authorization") == "" {
-		t.Fatal("Expected Authorization header to have been set")
-	}
-
-	if headerValue := got.Header.Get("Authorization"); headerValue != expectedHeaderValue {
-		t.Fatalf(`Expected Authorization header value "%s", but got "%v"`, expectedHeaderValue, headerValue)
-	}
-
-	if urlHost := got.URL.Host; urlHost != expectedURLHost {
-		t.Fatalf(`Expected url host "%s", but got "%v"`, expectedURLHost, urlHost)
-	}
-
-	if urlPath := got.URL.Path; urlPath != fmt.Sprintf("/%s", fixture.TestPath) {
-		t.Fatalf(`Expected url path "/%s", but got "%v"`, fixture.TestPath, urlPath)
-	}
-}
-
-func TestClient_NewRequestGET_Error(t *testing.T) {
-	fixture := datagovgrtest.NewFixture(t)
-	expectedError := "nil Context"
-
-	_, err := fixture.InternalClient.NewRequestGET(nil, fixture.TestPath)
-	if err == nil {
-		t.Fatal("Expected error, but got nil")
-	}
-
-	if !strings.Contains(err.Error(), expectedError) {
-		t.Fatalf(`Expected error to contain "%v", but got "%v"`, expectedError, err)
-	}
-}
-
-func TestClient_MakeRequest_Success(t *testing.T) {
+func TestClient_MakeRequestGET_Success(t *testing.T) {
 	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 	expectedPayload := testPayload{Author: "chanioxaris"}
@@ -77,10 +31,9 @@ func TestClient_MakeRequest_Success(t *testing.T) {
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, expectedPayload),
 	)
 
-	req, _ := fixture.InternalClient.NewRequestGET(ctx, fixture.TestPath)
-
 	payload := testPayload{}
-	if err := fixture.InternalClient.MakeRequest(req, &payload); err != nil {
+	err := fixture.InternalClient.MakeRequestGET(ctx, fixture.TestPath, &payload)
+	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
 
@@ -89,7 +42,7 @@ func TestClient_MakeRequest_Success(t *testing.T) {
 	}
 }
 
-func TestClient_MakeRequest_Error(t *testing.T) {
+func TestClient_MakeRequestGET_Error(t *testing.T) {
 	fixture := datagovgrtest.NewFixture(t)
 
 	tests := []struct {
@@ -100,6 +53,14 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 		ctx           context.Context
 		expectedError string
 	}{
+		{
+			name:          "Nil context",
+			path:          "nil-context",
+			statusCode:    0,
+			body:          "",
+			ctx:           nil,
+			expectedError: "nil Context",
+		},
 		{
 			name:          "Unexpected status code",
 			path:          "unexpected-status-code",
@@ -129,10 +90,8 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 				httpmock.NewStringResponder(tt.statusCode, tt.body),
 			)
 
-			req, _ := fixture.InternalClient.NewRequestGET(tt.ctx, tt.path)
-
 			payload := testPayload{}
-			err := fixture.InternalClient.MakeRequest(req, &payload)
+			err := fixture.InternalClient.MakeRequestGET(tt.ctx, tt.path, &payload)
 			if err == nil {
 				t.Fatal("Expected error, but got nil")
 			}
@@ -144,7 +103,7 @@ func TestClient_MakeRequest_Error(t *testing.T) {
 	}
 }
 
-func TestClient_MakeRequest_Error_Timeout(t *testing.T) {
+func TestClient_MakeRequestGET_Error_Timeout(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*500)
 	defer cancel()
 
@@ -163,10 +122,8 @@ func TestClient_MakeRequest_Error_Timeout(t *testing.T) {
 		},
 	)
 
-	req, _ := fixture.InternalClient.NewRequestGET(ctx, fixture.TestPath)
-
 	payload := testPayload{}
-	err := fixture.InternalClient.MakeRequest(req, &payload)
+	err := fixture.InternalClient.MakeRequestGET(ctx, fixture.TestPath, &payload)
 	if err == nil {
 		t.Fatal("Expected error, but got nil")
 	}

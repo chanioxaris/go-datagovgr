@@ -24,15 +24,32 @@ func New(httpClient *http.Client, baseURL, apiToken string) *Client {
 	}
 }
 
-// NewRequestGET creates a new http.Request with GET method for provided path and applies required headers.
-func (c *Client) NewRequestGET(ctx context.Context, path string) (*http.Request, error) {
-	headers := map[string]string{"Authorization": fmt.Sprintf("Token %s", c.apiToken)}
-	return c.newRequest(ctx, http.MethodGet, path, nil, headers)
+// MakeRequestGET makes a GET http request to the API and populates the provided payload.
+func (c *Client) MakeRequestGET(ctx context.Context, path string, payload interface{}) error {
+	req, err := c.newRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return err
+	}
+
+	return c.makeRequest(req, payload)
 }
 
-// MakeRequest makes an http request and populates the proved payload with the http response body after decoding it.
+// newRequest creates a new http request with the provided parameters.
+func (c *Client) newRequest(ctx context.Context, method, path string, body io.Reader) (*http.Request, error) {
+	req, err := http.NewRequestWithContext(ctx, method, fmt.Sprintf("%s/%s", c.baseURL, path), body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Add Authorization header to request.
+	req.Header.Set("Authorization", fmt.Sprintf("Token %s", c.apiToken))
+
+	return req, nil
+}
+
+// makeRequest makes an http request and populates the provided payload with the http response body after decoding it.
 // Also verifies if the request was successful by checking the response status code.
-func (c *Client) MakeRequest(req *http.Request, payload interface{}) error {
+func (c *Client) makeRequest(req *http.Request, payload interface{}) error {
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return err
@@ -49,17 +66,4 @@ func (c *Client) MakeRequest(req *http.Request, payload interface{}) error {
 	}
 
 	return nil
-}
-
-func (c *Client) newRequest(ctx context.Context, method, path string, body io.Reader, headers map[string]string) (*http.Request, error) {
-	req, err := http.NewRequestWithContext(ctx, method, fmt.Sprintf("%s/%s", c.baseURL, path), body)
-	if err != nil {
-		return nil, err
-	}
-
-	for key, value := range headers {
-		req.Header.Set(key, value)
-	}
-
-	return req, nil
 }

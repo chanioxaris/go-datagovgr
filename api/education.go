@@ -19,13 +19,8 @@ func NewEducation(client *internalclient.Client) *Education {
 
 // UniversityTeachingStaff retrieves data for the number of teaching staff by school and ranking.
 func (e *Education) UniversityTeachingStaff(ctx context.Context) ([]*types.UniversityTeachingStaff, error) {
-	req, err := e.client.NewRequestGET(ctx, "minedu_dep")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.UniversityTeachingStaff, 0)
-	if err := e.client.MakeRequest(req, &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "minedu_dep", &response); err != nil {
 		return nil, err
 	}
 
@@ -34,13 +29,8 @@ func (e *Education) UniversityTeachingStaff(ctx context.Context) ([]*types.Unive
 
 // StudentsBySchool retrieves data for the number of students by school and gender.
 func (e *Education) StudentsBySchool(ctx context.Context) ([]*types.StudentsBySchool, error) {
-	req, err := e.client.NewRequestGET(ctx, "minedu_students_school")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.StudentsBySchool, 0)
-	if err := e.client.MakeRequest(req, &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "minedu_students_school", &response); err != nil {
 		return nil, err
 	}
 
@@ -49,13 +39,8 @@ func (e *Education) StudentsBySchool(ctx context.Context) ([]*types.StudentsBySc
 
 // AtlasInternshipStatistics retrieves annual statistics of internships through the Atlas system.
 func (e *Education) AtlasInternshipStatistics(ctx context.Context) ([]*types.AtlasInternshipStatistics, error) {
-	req, err := e.client.NewRequestGET(ctx, "grnet_atlas")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.AtlasInternshipStatistics, 0)
-	if err := e.client.MakeRequest(req, &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "grnet_atlas", &response); err != nil {
 		return nil, err
 	}
 
@@ -64,13 +49,8 @@ func (e *Education) AtlasInternshipStatistics(ctx context.Context) ([]*types.Atl
 
 // EudoksosRequestsAndDeliveries retrieves statistics of requests and deliveries for books made through the Eudoxus system.
 func (e *Education) EudoksosRequestsAndDeliveries(ctx context.Context) ([]*types.EudoksosRequestsAndDeliveries, error) {
-	req, err := e.client.NewRequestGET(ctx, "grnet_eudoxus")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.EudoksosRequestsAndDeliveries, 0)
-	if err := e.client.MakeRequest(req, &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "grnet_eudoxus", &response); err != nil {
 		return nil, err
 	}
 

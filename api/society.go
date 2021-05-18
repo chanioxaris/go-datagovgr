@@ -19,13 +19,8 @@ func NewSociety(client *internalclient.Client) *Society {
 
 // UnemploymentClaims retrieves data for unemployment claims based on OAED.
 func (s *Society) UnemploymentClaims(ctx context.Context) ([]*types.UnemploymentClaims, error) {
-	req, err := s.client.NewRequestGET(ctx, "oaed_unemployment")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.UnemploymentClaims, 0)
-	if err := s.client.MakeRequest(req, &response); err != nil {
+	if err := s.client.MakeRequestGET(ctx, "oaed_unemployment", &response); err != nil {
 		return nil, err
 	}
 
@@ -34,13 +29,8 @@ func (s *Society) UnemploymentClaims(ctx context.Context) ([]*types.Unemployment
 
 // ElectorsByAge retrieves data for electors by age.
 func (s *Society) ElectorsByAge(ctx context.Context) ([]*types.ElectorsByAge, error) {
-	req, err := s.client.NewRequestGET(ctx, "minint_election_age")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.ElectorsByAge, 0)
-	if err := s.client.MakeRequest(req, &response); err != nil {
+	if err := s.client.MakeRequestGET(ctx, "minint_election_age", &response); err != nil {
 		return nil, err
 	}
 
@@ -49,13 +39,8 @@ func (s *Society) ElectorsByAge(ctx context.Context) ([]*types.ElectorsByAge, er
 
 // ElectorsByRegionAndGender retrieves data for electors by region and gender.
 func (s *Society) ElectorsByRegionAndGender(ctx context.Context) ([]*types.ElectorsByRegionAndGender, error) {
-	req, err := s.client.NewRequestGET(ctx, "minint_election_distribution")
-	if err != nil {
-		return nil, err
-	}
-
 	response := make([]*types.ElectorsByRegionAndGender, 0)
-	if err := s.client.MakeRequest(req, &response); err != nil {
+	if err := s.client.MakeRequestGET(ctx, "minint_election_distribution", &response); err != nil {
 		return nil, err
 	}
 
