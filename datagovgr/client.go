@@ -17,11 +17,12 @@ var (
 
 // Client holds available data.gov.gr API endpoints.
 type Client struct {
-	Education  *api.Education
-	Health     *api.Health
-	Society    *api.Society
-	Technology *api.Technology
-	Telcos     *api.Telcos
+	BusinessEconomy *api.BusinessEconomy
+	Education       *api.Education
+	Health          *api.Health
+	Society         *api.Society
+	Technology      *api.Technology
+	Telcos          *api.Telcos
 }
 
 // NewClient creates a new Client instance. Requires an API token as input.
@@ -33,10 +34,11 @@ func NewClient(apiToken string) (*Client, error) {
 	internalClient := client.New(http.DefaultClient, baseURL, apiToken)
 
 	return &Client{
-		Education:  api.NewEducation(internalClient),
-		Health:     api.NewHealth(internalClient),
-		Society:    api.NewSociety(internalClient),
-		Technology: api.NewTechnology(internalClient),
-		Telcos:     api.NewTelcos(internalClient),
+		BusinessEconomy: api.NewBusinessEconomy(internalClient),
+		Education:       api.NewEducation(internalClient),
+		Health:          api.NewHealth(internalClient),
+		Society:         api.NewSociety(internalClient),
+		Technology:      api.NewTechnology(internalClient),
+		Telcos:          api.NewTelcos(internalClient),
 	}, nil
 }

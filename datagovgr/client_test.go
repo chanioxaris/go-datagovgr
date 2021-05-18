@@ -16,6 +16,10 @@ func TestNewClient_Success(t *testing.T) {
 		t.Fatalf("Unexpected error %v", err)
 	}
 
+	if c.BusinessEconomy == nil {
+		t.Fatal(`Expected "BusinessEconomy" field not to be nil`)
+	}
+
 	if c.Education == nil {
 		t.Fatal(`Expected "Education" field not to be nil`)
 	}

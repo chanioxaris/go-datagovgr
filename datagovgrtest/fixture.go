@@ -30,15 +30,17 @@ type Fixture struct {
 }
 
 type fixtureAPI struct {
-	Education  *api.Education
-	Health     *api.Health
-	Society    *api.Society
-	Technology *api.Technology
-	Telcos     *api.Telcos
+	BusinessEconomy *api.BusinessEconomy
+	Education       *api.Education
+	Health          *api.Health
+	Society         *api.Society
+	Technology      *api.Technology
+	Telcos          *api.Telcos
 }
 
 type fixtureURLPaths struct {
 	AtlasInternshipStatistics     string
+	CasinoTickets                 string
 	COVID19VaccinationStatistics  string
 	ElectorsByAge                 string
 	ElectorsByRegionAndGender     string
@@ -46,10 +48,15 @@ type fixtureURLPaths struct {
 	IndicatorsAndStatistics       string
 	InspectionsAndViolations      string
 	InternetTraffic               string
+	NumberOfAccountants           string
+	NumberOfAuditorsAndFirms      string
 	NumberOfDentists              string
 	NumberOfDoctors               string
+	NumberOfEnergyInspectors      string
 	NumberOfPharmacies            string
 	NumberOfPharmacists           string
+	NumberOfRealtors              string
+	NumberOfTravelAgencies        string
 	StudentsBySchool              string
 	UnemploymentClaims            string
 	UniversityTeachingStaff       string
@@ -57,6 +64,7 @@ type fixtureURLPaths struct {
 
 type mockData struct {
 	AtlasInternshipStatistics     []*types.AtlasInternshipStatistics
+	CasinoTickets                 []*types.CasinoTickets
 	COVID19VaccinationStatistic   []*types.COVID19VaccinationStatistics
 	ElectorsByAge                 []*types.ElectorsByAge
 	ElectorsByRegionAndGender     []*types.ElectorsByRegionAndGender
@@ -64,10 +72,15 @@ type mockData struct {
 	IndicatorsAndStatistics       []*types.IndicatorsAndStatistics
 	InspectionsAndViolations      []*types.InspectionsAndViolations
 	InternetTraffic               []*types.InternetTraffic
+	NumberOfAccountants           []*types.NumberOfAccountants
+	NumberOfAuditorsAndFirms      []*types.NumberOfAuditorsAndFirms
 	NumberOfDentists              []*types.NumberOfDentists
 	NumberOfDoctors               []*types.NumberOfDoctors
+	NumberOfEnergyInspectors      []*types.NumberOfEnergyInspectors
 	NumberOfPharmacies            []*types.NumberOfPharmacies
 	NumberOfPharmacists           []*types.NumberOfPharmacists
+	NumberOfRealtors              []*types.NumberOfRealtors
+	NumberOfTravelAgencies        []*types.NumberOfTravelAgencies
 	StudentsBySchool              []*types.StudentsBySchool
 	UnemploymentClaims            []*types.UnemploymentClaims
 	UniversityTeachingStaff       []*types.UniversityTeachingStaff
@@ -96,11 +109,12 @@ func NewFixture(t *testing.T) *Fixture {
 func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 	t.Helper()
 	return &fixtureAPI{
-		Education:  api.NewEducation(c),
-		Health:     api.NewHealth(c),
-		Society:    api.NewSociety(c),
-		Technology: api.NewTechnology(c),
-		Telcos:     api.NewTelcos(c),
+		BusinessEconomy: api.NewBusinessEconomy(c),
+		Education:       api.NewEducation(c),
+		Health:          api.NewHealth(c),
+		Society:         api.NewSociety(c),
+		Technology:      api.NewTechnology(c),
+		Telcos:          api.NewTelcos(c),
 	}
 }
 
@@ -108,6 +122,7 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 	t.Helper()
 	return &fixtureURLPaths{
 		AtlasInternshipStatistics:     "/grnet_atlas",
+		CasinoTickets:                 "/eeep_casino_tickets",
 		COVID19VaccinationStatistics:  "/mdg_emvolio",
 		ElectorsByAge:                 "/minint_election_age",
 		ElectorsByRegionAndGender:     "/minint_election_distribution",
@@ -115,10 +130,15 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 		IndicatorsAndStatistics:       "/eett_telecom_indicators",
 		InspectionsAndViolations:      "/efet_inspections",
 		InternetTraffic:               "/internet_traffic",
+		NumberOfAccountants:           "/oee_accountants",
+		NumberOfAuditorsAndFirms:      "/elte_auditors",
 		NumberOfDentists:              "/minhealth_dentists",
 		NumberOfDoctors:               "/minhealth_doctors",
+		NumberOfEnergyInspectors:      "/minenv_inspectors",
 		NumberOfPharmacies:            "/minhealth_pharmacies",
 		NumberOfPharmacists:           "/minhealth_pharmacists",
+		NumberOfRealtors:              "/mindev_realtors",
+		NumberOfTravelAgencies:        "/mintour_agencies",
 		StudentsBySchool:              "/minedu_students_school",
 		UnemploymentClaims:            "/oaed_unemployment",
 		UniversityTeachingStaff:       "/minedu_dep",
