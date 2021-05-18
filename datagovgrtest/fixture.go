@@ -14,12 +14,14 @@ import (
 const (
 	baseURL  = "https://test.com"
 	apiToken = "test-token"
+	testPath = "test-path"
 )
 
 // Fixture holds the necessary data to make testing easier.
 type Fixture struct {
 	BaseURL        string
 	APIToken       string
+	TestPath       string
 	Client         *datagovgr.Client
 	InternalClient *internalclient.Client
 	API            *fixtureAPI
@@ -69,6 +71,7 @@ func NewFixture(t *testing.T) *Fixture {
 	return &Fixture{
 		BaseURL:        baseURL,
 		APIToken:       apiToken,
+		TestPath:       testPath,
 		Client:         client,
 		InternalClient: internalClient,
 		API:            newFixtureAPI(t, internalClient),

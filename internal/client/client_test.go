@@ -23,7 +23,7 @@ func TestClient_NewRequestGET_Success(t *testing.T) {
 	expectedHeaderValue := fmt.Sprintf("Token %s", fixture.APIToken)
 	expectedURLHost := strings.TrimPrefix(fixture.BaseURL, "https://")
 
-	got, err := fixture.InternalClient.NewRequestGET(ctx, "test-path")
+	got, err := fixture.InternalClient.NewRequestGET(ctx, fixture.TestPath)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -44,8 +44,8 @@ func TestClient_NewRequestGET_Success(t *testing.T) {
 		t.Fatalf(`Expected url host "%s", but got "%v"`, expectedURLHost, urlHost)
 	}
 
-	if urlPath := got.URL.Path; urlPath != "/test-path" {
-		t.Fatalf(`Expected url path "/test-path", but got "%v"`, urlPath)
+	if urlPath := got.URL.Path; urlPath != fmt.Sprintf("/%s", fixture.TestPath) {
+		t.Fatalf(`Expected url path "/%s", but got "%v"`, fixture.TestPath, urlPath)
 	}
 }
 
@@ -53,7 +53,7 @@ func TestClient_NewRequestGET_Error(t *testing.T) {
 	fixture := datagovgrtest.NewFixture(t)
 	expectedError := "nil Context"
 
-	_, err := fixture.InternalClient.NewRequestGET(nil, "test-path")
+	_, err := fixture.InternalClient.NewRequestGET(nil, fixture.TestPath)
 	if err == nil {
 		t.Fatal("Expected error, but got nil")
 	}
@@ -73,11 +73,11 @@ func TestClient_MakeRequest_Success(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		http.MethodGet,
-		fmt.Sprintf("%s/test-path", fixture.BaseURL),
+		fmt.Sprintf("%s/%s", fixture.BaseURL, fixture.TestPath),
 		httpmock.NewJsonResponderOrPanic(http.StatusOK, expectedPayload),
 	)
 
-	req, _ := fixture.InternalClient.NewRequestGET(ctx, "test-path")
+	req, _ := fixture.InternalClient.NewRequestGET(ctx, fixture.TestPath)
 
 	payload := testPayload{}
 	if err := fixture.InternalClient.MakeRequest(req, &payload); err != nil {
@@ -156,14 +156,14 @@ func TestClient_MakeRequest_Error_Timeout(t *testing.T) {
 
 	httpmock.RegisterResponder(
 		http.MethodGet,
-		fmt.Sprintf("%s/test-path", fixture.BaseURL),
+		fmt.Sprintf("%s/%s", fixture.BaseURL, fixture.TestPath),
 		func(req *http.Request) (*http.Response, error) {
 			time.Sleep(time.Second * 1)
 			return httpmock.NewJsonResponse(http.StatusOK, testPayload{Author: "chanioxaris"})
 		},
 	)
 
-	req, _ := fixture.InternalClient.NewRequestGET(ctx, "test-path")
+	req, _ := fixture.InternalClient.NewRequestGET(ctx, fixture.TestPath)
 
 	payload := testPayload{}
 	err := fixture.InternalClient.MakeRequest(req, &payload)
