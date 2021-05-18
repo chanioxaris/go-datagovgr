@@ -18,6 +18,7 @@ var (
 // Client holds available data.gov.gr API endpoints.
 type Client struct {
 	Education  *api.Education
+	Health     *api.Health
 	Society    *api.Society
 	Technology *api.Technology
 	Telcos     *api.Telcos
@@ -33,6 +34,7 @@ func NewClient(apiToken string) (*Client, error) {
 
 	return &Client{
 		Education:  api.NewEducation(internalClient),
+		Health:     api.NewHealth(internalClient),
 		Society:    api.NewSociety(internalClient),
 		Technology: api.NewTechnology(internalClient),
 		Telcos:     api.NewTelcos(internalClient),

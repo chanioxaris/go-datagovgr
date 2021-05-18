@@ -31,6 +31,7 @@ type Fixture struct {
 
 type fixtureAPI struct {
 	Education  *api.Education
+	Health     *api.Health
 	Society    *api.Society
 	Technology *api.Technology
 	Telcos     *api.Telcos
@@ -38,11 +39,17 @@ type fixtureAPI struct {
 
 type fixtureURLPaths struct {
 	AtlasInternshipStatistics     string
+	COVID19VaccinationStatistics  string
 	ElectorsByAge                 string
 	ElectorsByRegionAndGender     string
 	EudoksosRequestsAndDeliveries string
 	IndicatorsAndStatistics       string
+	InspectionsAndViolations      string
 	InternetTraffic               string
+	NumberOfDentists              string
+	NumberOfDoctors               string
+	NumberOfPharmacies            string
+	NumberOfPharmacists           string
 	StudentsBySchool              string
 	UnemploymentClaims            string
 	UniversityTeachingStaff       string
@@ -50,11 +57,17 @@ type fixtureURLPaths struct {
 
 type mockData struct {
 	AtlasInternshipStatistics     []*types.AtlasInternshipStatistics
+	COVID19VaccinationStatistic   []*types.COVID19VaccinationStatistics
 	ElectorsByAge                 []*types.ElectorsByAge
 	ElectorsByRegionAndGender     []*types.ElectorsByRegionAndGender
 	EudoksosRequestsAndDeliveries []*types.EudoksosRequestsAndDeliveries
 	IndicatorsAndStatistics       []*types.IndicatorsAndStatistics
+	InspectionsAndViolations      []*types.InspectionsAndViolations
 	InternetTraffic               []*types.InternetTraffic
+	NumberOfDentists              []*types.NumberOfDentists
+	NumberOfDoctors               []*types.NumberOfDoctors
+	NumberOfPharmacies            []*types.NumberOfPharmacies
+	NumberOfPharmacists           []*types.NumberOfPharmacists
 	StudentsBySchool              []*types.StudentsBySchool
 	UnemploymentClaims            []*types.UnemploymentClaims
 	UniversityTeachingStaff       []*types.UniversityTeachingStaff
@@ -84,6 +97,7 @@ func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 	t.Helper()
 	return &fixtureAPI{
 		Education:  api.NewEducation(c),
+		Health:     api.NewHealth(c),
 		Society:    api.NewSociety(c),
 		Technology: api.NewTechnology(c),
 		Telcos:     api.NewTelcos(c),
@@ -94,11 +108,17 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 	t.Helper()
 	return &fixtureURLPaths{
 		AtlasInternshipStatistics:     "/grnet_atlas",
+		COVID19VaccinationStatistics:  "/mdg_emvolio",
 		ElectorsByAge:                 "/minint_election_age",
 		ElectorsByRegionAndGender:     "/minint_election_distribution",
 		EudoksosRequestsAndDeliveries: "/grnet_eudoxus",
 		IndicatorsAndStatistics:       "/eett_telecom_indicators",
+		InspectionsAndViolations:      "/efet_inspections",
 		InternetTraffic:               "/internet_traffic",
+		NumberOfDentists:              "/minhealth_dentists",
+		NumberOfDoctors:               "/minhealth_doctors",
+		NumberOfPharmacies:            "/minhealth_pharmacies",
+		NumberOfPharmacists:           "/minhealth_pharmacists",
 		StudentsBySchool:              "/minedu_students_school",
 		UnemploymentClaims:            "/oaed_unemployment",
 		UniversityTeachingStaff:       "/minedu_dep",

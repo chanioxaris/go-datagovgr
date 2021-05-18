@@ -20,6 +20,10 @@ func TestNewClient_Success(t *testing.T) {
 		t.Fatal(`Expected "Education" field not to be nil`)
 	}
 
+	if c.Health == nil {
+		t.Fatal(`Expected "Health" field not to be nil`)
+	}
+
 	if c.Society == nil {
 		t.Fatal(`Expected "Society" field not to be nil`)
 	}
