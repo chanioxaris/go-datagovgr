@@ -63,12 +63,13 @@ func NewFixture(t *testing.T) *Fixture {
 	t.Helper()
 
 	gofakeit.Seed(0)
+	client, _ := datagovgr.NewClient(apiToken)
 	internalClient := internalclient.New(http.DefaultClient, baseURL, apiToken)
 
 	return &Fixture{
 		BaseURL:        baseURL,
 		APIToken:       apiToken,
-		Client:         datagovgr.NewClient(apiToken),
+		Client:         client,
 		InternalClient: internalClient,
 		API:            newFixtureAPI(t, internalClient),
 		URLPaths:       newFixtureURLPaths(t),
