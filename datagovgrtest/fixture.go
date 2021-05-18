@@ -31,6 +31,7 @@ type Fixture struct {
 
 type fixtureAPI struct {
 	BusinessEconomy *api.BusinessEconomy
+	CrimeJustice    *api.CrimeJustice
 	Education       *api.Education
 	Health          *api.Health
 	Society         *api.Society
@@ -42,9 +43,11 @@ type fixtureURLPaths struct {
 	AtlasInternshipStatistics     string
 	CasinoTickets                 string
 	COVID19VaccinationStatistics  string
+	CrimeStatistics               string
 	ElectorsByAge                 string
 	ElectorsByRegionAndGender     string
 	EudoksosRequestsAndDeliveries string
+	FinancialCrimes               string
 	IndicatorsAndStatistics       string
 	InspectionsAndViolations      string
 	InternetTraffic               string
@@ -53,11 +56,16 @@ type fixtureURLPaths struct {
 	NumberOfDentists              string
 	NumberOfDoctors               string
 	NumberOfEnergyInspectors      string
+	NumberOfLawFirms              string
+	NumberOfLawyers               string
 	NumberOfPharmacies            string
 	NumberOfPharmacists           string
 	NumberOfRealtors              string
 	NumberOfTravelAgencies        string
+	RescueOperations              string
 	StudentsBySchool              string
+	TrafficAccidents              string
+	TrafficViolations             string
 	UnemploymentClaims            string
 	UniversityTeachingStaff       string
 }
@@ -66,9 +74,11 @@ type mockData struct {
 	AtlasInternshipStatistics     []*types.AtlasInternshipStatistics
 	CasinoTickets                 []*types.CasinoTickets
 	COVID19VaccinationStatistic   []*types.COVID19VaccinationStatistics
+	CrimeStatistics               []*types.CrimeStatistics
 	ElectorsByAge                 []*types.ElectorsByAge
 	ElectorsByRegionAndGender     []*types.ElectorsByRegionAndGender
 	EudoksosRequestsAndDeliveries []*types.EudoksosRequestsAndDeliveries
+	FinancialCrimes               []*types.FinancialCrimes
 	IndicatorsAndStatistics       []*types.IndicatorsAndStatistics
 	InspectionsAndViolations      []*types.InspectionsAndViolations
 	InternetTraffic               []*types.InternetTraffic
@@ -77,11 +87,16 @@ type mockData struct {
 	NumberOfDentists              []*types.NumberOfDentists
 	NumberOfDoctors               []*types.NumberOfDoctors
 	NumberOfEnergyInspectors      []*types.NumberOfEnergyInspectors
+	NumberOfLawFirms              []*types.NumberOfLawFirms
+	NumberOfLawyers               []*types.NumberOfLawyers
 	NumberOfPharmacies            []*types.NumberOfPharmacies
 	NumberOfPharmacists           []*types.NumberOfPharmacists
 	NumberOfRealtors              []*types.NumberOfRealtors
 	NumberOfTravelAgencies        []*types.NumberOfTravelAgencies
+	RescueOperations              []*types.RescueOperations
 	StudentsBySchool              []*types.StudentsBySchool
+	TrafficAccidents              []*types.TrafficAccidents
+	TrafficViolations             []*types.TrafficViolations
 	UnemploymentClaims            []*types.UnemploymentClaims
 	UniversityTeachingStaff       []*types.UniversityTeachingStaff
 }
@@ -110,6 +125,7 @@ func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 	t.Helper()
 	return &fixtureAPI{
 		BusinessEconomy: api.NewBusinessEconomy(c),
+		CrimeJustice:    api.NewCrimeJustice(c),
 		Education:       api.NewEducation(c),
 		Health:          api.NewHealth(c),
 		Society:         api.NewSociety(c),
@@ -124,9 +140,11 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 		AtlasInternshipStatistics:     "/grnet_atlas",
 		CasinoTickets:                 "/eeep_casino_tickets",
 		COVID19VaccinationStatistics:  "/mdg_emvolio",
+		CrimeStatistics:               "/mcp_crime",
 		ElectorsByAge:                 "/minint_election_age",
 		ElectorsByRegionAndGender:     "/minint_election_distribution",
 		EudoksosRequestsAndDeliveries: "/grnet_eudoxus",
+		FinancialCrimes:               "/mcp_financial_crimes",
 		IndicatorsAndStatistics:       "/eett_telecom_indicators",
 		InspectionsAndViolations:      "/efet_inspections",
 		InternetTraffic:               "/internet_traffic",
@@ -135,11 +153,16 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 		NumberOfDentists:              "/minhealth_dentists",
 		NumberOfDoctors:               "/minhealth_doctors",
 		NumberOfEnergyInspectors:      "/minenv_inspectors",
+		NumberOfLawFirms:              "/minjust_law_firms",
+		NumberOfLawyers:               "/minjust_lawyers",
 		NumberOfPharmacies:            "/minhealth_pharmacies",
 		NumberOfPharmacists:           "/minhealth_pharmacists",
 		NumberOfRealtors:              "/mindev_realtors",
 		NumberOfTravelAgencies:        "/mintour_agencies",
+		RescueOperations:              "/hcg_incidents",
 		StudentsBySchool:              "/minedu_students_school",
+		TrafficAccidents:              "/mcp_traffic_accidents",
+		TrafficViolations:             "/mcp_traffic_violations",
 		UnemploymentClaims:            "/oaed_unemployment",
 		UniversityTeachingStaff:       "/minedu_dep",
 	}
