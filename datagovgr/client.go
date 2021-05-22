@@ -20,6 +20,7 @@ type Client struct {
 	BusinessEconomy *api.BusinessEconomy
 	CrimeJustice    *api.CrimeJustice
 	Education       *api.Education
+	Environment     *api.Environment
 	Health          *api.Health
 	Society         *api.Society
 	Technology      *api.Technology
@@ -38,6 +39,7 @@ func NewClient(apiToken string) (*Client, error) {
 		BusinessEconomy: api.NewBusinessEconomy(internalClient),
 		CrimeJustice:    api.NewCrimeJustice(internalClient),
 		Education:       api.NewEducation(internalClient),
+		Environment:     api.NewEnvironment(internalClient),
 		Health:          api.NewHealth(internalClient),
 		Society:         api.NewSociety(internalClient),
 		Technology:      api.NewTechnology(internalClient),

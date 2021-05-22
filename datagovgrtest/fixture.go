@@ -33,6 +33,7 @@ type fixtureAPI struct {
 	BusinessEconomy *api.BusinessEconomy
 	CrimeJustice    *api.CrimeJustice
 	Education       *api.Education
+	Environment     *api.Environment
 	Health          *api.Health
 	Society         *api.Society
 	Technology      *api.Technology
@@ -46,6 +47,9 @@ type fixtureURLPaths struct {
 	CrimeStatistics               string
 	ElectorsByAge                 string
 	ElectorsByRegionAndGender     string
+	ElectricityConsumption        string
+	EnergyBalance                 string
+	EnergySystemLoad              string
 	EudoksosRequestsAndDeliveries string
 	FinancialCrimes               string
 	IndicatorsAndStatistics       string
@@ -62,6 +66,7 @@ type fixtureURLPaths struct {
 	NumberOfPharmacists           string
 	NumberOfRealtors              string
 	NumberOfTravelAgencies        string
+	RenewableEnergySources        string
 	RescueOperations              string
 	StudentsBySchool              string
 	TrafficAccidents              string
@@ -77,6 +82,9 @@ type mockData struct {
 	CrimeStatistics               []*types.CrimeStatistics
 	ElectorsByAge                 []*types.ElectorsByAge
 	ElectorsByRegionAndGender     []*types.ElectorsByRegionAndGender
+	ElectricityConsumption        []*types.ElectricityConsumption
+	EnergyBalance                 []*types.EnergyBalance
+	EnergySystemLoad              []*types.EnergySystemLoad
 	EudoksosRequestsAndDeliveries []*types.EudoksosRequestsAndDeliveries
 	FinancialCrimes               []*types.FinancialCrimes
 	IndicatorsAndStatistics       []*types.IndicatorsAndStatistics
@@ -93,6 +101,7 @@ type mockData struct {
 	NumberOfPharmacists           []*types.NumberOfPharmacists
 	NumberOfRealtors              []*types.NumberOfRealtors
 	NumberOfTravelAgencies        []*types.NumberOfTravelAgencies
+	RenewableEnergySources        []*types.RenewableEnergySources
 	RescueOperations              []*types.RescueOperations
 	StudentsBySchool              []*types.StudentsBySchool
 	TrafficAccidents              []*types.TrafficAccidents
@@ -127,6 +136,7 @@ func newFixtureAPI(t *testing.T, c *internalclient.Client) *fixtureAPI {
 		BusinessEconomy: api.NewBusinessEconomy(c),
 		CrimeJustice:    api.NewCrimeJustice(c),
 		Education:       api.NewEducation(c),
+		Environment:     api.NewEnvironment(c),
 		Health:          api.NewHealth(c),
 		Society:         api.NewSociety(c),
 		Technology:      api.NewTechnology(c),
@@ -143,6 +153,9 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 		CrimeStatistics:               "/mcp_crime",
 		ElectorsByAge:                 "/minint_election_age",
 		ElectorsByRegionAndGender:     "/minint_election_distribution",
+		ElectricityConsumption:        "/electricity_consumption",
+		EnergyBalance:                 "/admie_dailyenergybalanceanalysis",
+		EnergySystemLoad:              "/admie_realtimescadasystemload",
 		EudoksosRequestsAndDeliveries: "/grnet_eudoxus",
 		FinancialCrimes:               "/mcp_financial_crimes",
 		IndicatorsAndStatistics:       "/eett_telecom_indicators",
@@ -159,6 +172,7 @@ func newFixtureURLPaths(t *testing.T) *fixtureURLPaths {
 		NumberOfPharmacists:           "/minhealth_pharmacists",
 		NumberOfRealtors:              "/mindev_realtors",
 		NumberOfTravelAgencies:        "/mintour_agencies",
+		RenewableEnergySources:        "/admie_realtimescadares",
 		RescueOperations:              "/hcg_incidents",
 		StudentsBySchool:              "/minedu_students_school",
 		TrafficAccidents:              "/mcp_traffic_accidents",
