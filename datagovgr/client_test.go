@@ -2,6 +2,7 @@ package datagovgr_test
 
 import (
 	"errors"
+	"net/http"
 	"testing"
 
 	"github.com/chanioxaris/go-datagovgr/datagovgr"
@@ -11,7 +12,7 @@ import (
 func TestNewClient_Success(t *testing.T) {
 	fixture := datagovgrtest.NewFixture(t)
 
-	c, err := datagovgr.NewClient(fixture.APIToken)
+	c, err := datagovgr.NewClient(fixture.APIToken, datagovgr.WithHTTPClient(http.DefaultClient))
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
@@ -50,9 +51,12 @@ func TestNewClient_Success(t *testing.T) {
 }
 
 func TestNewClient_Error(t *testing.T) {
+	fixture := datagovgrtest.NewFixture(t)
+
 	tests := []struct {
 		name        string
 		apiToken    string
+		option      datagovgr.ClientOption
 		expectedErr error
 	}{
 		{
@@ -60,11 +64,17 @@ func TestNewClient_Error(t *testing.T) {
 			apiToken:    "",
 			expectedErr: datagovgr.ErrMissingAPIToken,
 		},
+		{
+			name:        "Nil http client",
+			apiToken:    fixture.APIToken,
+			option:      datagovgr.WithHTTPClient(nil),
+			expectedErr: datagovgr.ErrNilHTTPClient,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := datagovgr.NewClient(tt.apiToken)
+			_, err := datagovgr.NewClient(tt.apiToken, tt.option)
 			if err == nil {
 				t.Fatalf("Expected error, but got nil")
 			}
