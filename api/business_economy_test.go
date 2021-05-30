@@ -50,7 +50,7 @@ func TestBusinessEconomy_NumberOfTravelAgencies_Error(t *testing.T) {
 
 	_, err := fixture.API.BusinessEconomy.NumberOfTravelAgencies(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -97,7 +97,7 @@ func TestBusinessEconomy_NumberOfRealtors_Error(t *testing.T) {
 
 	_, err := fixture.API.BusinessEconomy.NumberOfRealtors(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -144,7 +144,7 @@ func TestBusinessEconomy_NumberOfEnergyInspectors_Error(t *testing.T) {
 
 	_, err := fixture.API.BusinessEconomy.NumberOfEnergyInspectors(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -191,7 +191,7 @@ func TestBusinessEconomy_NumberOfAuditorsAndFirms_Error(t *testing.T) {
 
 	_, err := fixture.API.BusinessEconomy.NumberOfAuditorsAndFirms(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -238,7 +238,7 @@ func TestBusinessEconomy_CasinoTickets_Error(t *testing.T) {
 
 	_, err := fixture.API.BusinessEconomy.CasinoTickets(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -285,7 +285,7 @@ func TestBusinessEconomy_NumberOfAccountants_Error(t *testing.T) {
 
 	_, err := fixture.API.BusinessEconomy.NumberOfAccountants(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {

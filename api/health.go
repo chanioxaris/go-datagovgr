@@ -18,9 +18,14 @@ func NewHealth(client *internalclient.Client) *Health {
 }
 
 // COVID19VaccinationStatistics retrieves general public COVID-19 vaccination statistics by region and day.
-func (h *Health) COVID19VaccinationStatistics(ctx context.Context) ([]*types.COVID19VaccinationStatistics, error) {
+func (h *Health) COVID19VaccinationStatistics(ctx context.Context, params ...QueryParameter) ([]*types.COVID19VaccinationStatistics, error) {
+	queryParams := make(map[string]string)
+	for _, param := range params {
+		param(queryParams)
+	}
+
 	response := make([]*types.COVID19VaccinationStatistics, 0)
-	if err := h.client.MakeRequestGET(ctx, "mdg_emvolio", &response); err != nil {
+	if err := h.client.MakeRequestGET(ctx, "mdg_emvolio", &response, queryParams); err != nil {
 		return nil, err
 	}
 
@@ -30,7 +35,7 @@ func (h *Health) COVID19VaccinationStatistics(ctx context.Context) ([]*types.COV
 // InspectionsAndViolations retrieves annual statistics of food companies inspections and violations.
 func (h *Health) InspectionsAndViolations(ctx context.Context) ([]*types.InspectionsAndViolations, error) {
 	response := make([]*types.InspectionsAndViolations, 0)
-	if err := h.client.MakeRequestGET(ctx, "efet_inspections", &response); err != nil {
+	if err := h.client.MakeRequestGET(ctx, "efet_inspections", &response, nil); err != nil {
 		return nil, err
 	}
 
@@ -40,7 +45,7 @@ func (h *Health) InspectionsAndViolations(ctx context.Context) ([]*types.Inspect
 // NumberOfPharmacists retrieves the number of active pharmacists including new entrants and retiring professionals.
 func (h *Health) NumberOfPharmacists(ctx context.Context) ([]*types.NumberOfPharmacists, error) {
 	response := make([]*types.NumberOfPharmacists, 0)
-	if err := h.client.MakeRequestGET(ctx, "minhealth_pharmacists", &response); err != nil {
+	if err := h.client.MakeRequestGET(ctx, "minhealth_pharmacists", &response, nil); err != nil {
 		return nil, err
 	}
 
@@ -50,7 +55,7 @@ func (h *Health) NumberOfPharmacists(ctx context.Context) ([]*types.NumberOfPhar
 // NumberOfPharmacies retrieves the number of active pharmacies including new entrants and retiring professionals.
 func (h *Health) NumberOfPharmacies(ctx context.Context) ([]*types.NumberOfPharmacies, error) {
 	response := make([]*types.NumberOfPharmacies, 0)
-	if err := h.client.MakeRequestGET(ctx, "minhealth_pharmacies", &response); err != nil {
+	if err := h.client.MakeRequestGET(ctx, "minhealth_pharmacies", &response, nil); err != nil {
 		return nil, err
 	}
 
@@ -60,7 +65,7 @@ func (h *Health) NumberOfPharmacies(ctx context.Context) ([]*types.NumberOfPharm
 // NumberOfDoctors retrieves the number of active doctors including new entrants and retiring professionals.
 func (h *Health) NumberOfDoctors(ctx context.Context) ([]*types.NumberOfDoctors, error) {
 	response := make([]*types.NumberOfDoctors, 0)
-	if err := h.client.MakeRequestGET(ctx, "minhealth_doctors", &response); err != nil {
+	if err := h.client.MakeRequestGET(ctx, "minhealth_doctors", &response, nil); err != nil {
 		return nil, err
 	}
 
@@ -70,7 +75,7 @@ func (h *Health) NumberOfDoctors(ctx context.Context) ([]*types.NumberOfDoctors,
 // NumberOfDentists retrieves the number of active dentists including new entrants and retiring professionals.
 func (h *Health) NumberOfDentists(ctx context.Context) ([]*types.NumberOfDentists, error) {
 	response := make([]*types.NumberOfDentists, 0)
-	if err := h.client.MakeRequestGET(ctx, "minhealth_dentists", &response); err != nil {
+	if err := h.client.MakeRequestGET(ctx, "minhealth_dentists", &response, nil); err != nil {
 		return nil, err
 	}
 

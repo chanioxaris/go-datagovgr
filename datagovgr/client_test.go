@@ -76,7 +76,7 @@ func TestNewClient_Error(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			_, err := datagovgr.NewClient(tt.apiToken, tt.option)
 			if err == nil {
-				t.Fatalf("Expected error, but got nil")
+				t.Fatal("Expected error, but got nil")
 			}
 
 			if !errors.Is(err, tt.expectedErr) {

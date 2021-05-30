@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/chanioxaris/go-datagovgr/api"
 	"github.com/chanioxaris/go-datagovgr/datagovgrtest"
 	"github.com/jarcoal/httpmock"
 )
@@ -15,22 +16,68 @@ func TestHealth_COVID19VaccinationStatistics_Success(t *testing.T) {
 	ctx := context.Background()
 	fixture := datagovgrtest.NewFixture(t)
 
+	tests := []struct {
+		name            string
+		queryParameters []api.QueryParameter
+		query           map[string]string
+	}{
+		{
+			name:            "Success without query parameters",
+			queryParameters: nil,
+			query:           nil,
+		},
+		{
+			name: "Success with date_from query parameter",
+			queryParameters: []api.QueryParameter{
+				api.WithDateFrom(testTimeFrom),
+			},
+			query: map[string]string{
+				"date_from": "2009-01-03",
+			},
+		},
+		{
+			name: "Success with date_to query parameter",
+			queryParameters: []api.QueryParameter{
+				api.WithDateTo(testTimeTo),
+			},
+			query: map[string]string{
+				"date_to": "2021-05-30",
+			},
+		},
+		{
+			name: "Success with date_from and date_to query parameters",
+			queryParameters: []api.QueryParameter{
+				api.WithDateFrom(testTimeFrom),
+				api.WithDateTo(testTimeTo),
+			},
+			query: map[string]string{
+				"date_from": "2009-01-03",
+				"date_to":   "2021-05-30",
+			},
+		},
+	}
+
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	httpmock.RegisterResponder(
-		http.MethodGet,
-		fixture.URLPaths.COVID19VaccinationStatistics,
-		httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.COVID19VaccinationStatistic),
-	)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			httpmock.RegisterResponderWithQuery(
+				http.MethodGet,
+				fixture.URLPaths.COVID19VaccinationStatistics,
+				tt.query,
+				httpmock.NewJsonResponderOrPanic(http.StatusOK, fixture.MockData.COVID19VaccinationStatistic),
+			)
 
-	got, err := fixture.API.Health.COVID19VaccinationStatistics(ctx)
-	if err != nil {
-		t.Fatalf("Unexpected error %v", err)
-	}
+			got, err := fixture.API.Health.COVID19VaccinationStatistics(ctx, tt.queryParameters...)
+			if err != nil {
+				t.Fatalf("Unexpected error %v", err)
+			}
 
-	if !reflect.DeepEqual(got, fixture.MockData.COVID19VaccinationStatistic) {
-		t.Fatalf("Expected data %+v, but got %+v", fixture.MockData.COVID19VaccinationStatistic, got)
+			if !reflect.DeepEqual(got, fixture.MockData.COVID19VaccinationStatistic) {
+				t.Fatalf("Expected data %+v, but got %+v", fixture.MockData.COVID19VaccinationStatistic, got)
+			}
+		})
 	}
 }
 
@@ -50,7 +97,7 @@ func TestHealth_COVID19VaccinationStatistics_Error(t *testing.T) {
 
 	_, err := fixture.API.Health.COVID19VaccinationStatistics(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -97,7 +144,7 @@ func TestHealth_InspectionsAndViolations_Error(t *testing.T) {
 
 	_, err := fixture.API.Health.InspectionsAndViolations(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -144,7 +191,7 @@ func TestHealth_NumberOfPharmacists_Error(t *testing.T) {
 
 	_, err := fixture.API.Health.NumberOfPharmacists(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -191,7 +238,7 @@ func TestHealth_NumberOfPharmacies_Error(t *testing.T) {
 
 	_, err := fixture.API.Health.NumberOfPharmacies(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -238,7 +285,7 @@ func TestHealth_NumberOfDoctors_Error(t *testing.T) {
 
 	_, err := fixture.API.Health.NumberOfDoctors(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -285,7 +332,7 @@ func TestHealth_NumberOfDentists_Error(t *testing.T) {
 
 	_, err := fixture.API.Health.NumberOfDentists(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {

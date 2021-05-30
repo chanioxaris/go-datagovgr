@@ -50,7 +50,7 @@ func TestEducation_UniversityTeachingStaff_Error(t *testing.T) {
 
 	_, err := fixture.API.Education.UniversityTeachingStaff(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -97,7 +97,7 @@ func TestEducation_StudentsBySchool_Error(t *testing.T) {
 
 	_, err := fixture.API.Education.StudentsBySchool(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -144,7 +144,7 @@ func TestEducation_AtlasInternshipStatistics_Error(t *testing.T) {
 
 	_, err := fixture.API.Education.AtlasInternshipStatistics(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -191,7 +191,7 @@ func TestEducation_EudoksosRequestsAndDeliveries_Error(t *testing.T) {
 
 	_, err := fixture.API.Education.EudoksosRequestsAndDeliveries(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {

@@ -20,7 +20,7 @@ func NewTelcos(client *internalclient.Client) *Telcos {
 // IndicatorsAndStatistics retrieves indicators and statistics data for telecommunications in Greece.
 func (t *Telcos) IndicatorsAndStatistics(ctx context.Context) ([]*types.IndicatorsAndStatistics, error) {
 	response := make([]*types.IndicatorsAndStatistics, 0)
-	if err := t.client.MakeRequestGET(ctx, "eett_telecom_indicators", &response); err != nil {
+	if err := t.client.MakeRequestGET(ctx, "eett_telecom_indicators", &response, nil); err != nil {
 		return nil, err
 	}
 

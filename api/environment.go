@@ -18,9 +18,14 @@ func NewEnvironment(client *internalclient.Client) *Environment {
 }
 
 // RenewableEnergySources retrieves data for energy produced by renewable energy sources in Greece, in megawatt-hours.
-func (e *Environment) RenewableEnergySources(ctx context.Context) ([]*types.RenewableEnergySources, error) {
+func (e *Environment) RenewableEnergySources(ctx context.Context, params ...QueryParameter) ([]*types.RenewableEnergySources, error) {
+	queryParams := make(map[string]string)
+	for _, param := range params {
+		param(queryParams)
+	}
+
 	response := make([]*types.RenewableEnergySources, 0)
-	if err := e.client.MakeRequestGET(ctx, "admie_realtimescadares", &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "admie_realtimescadares", &response, queryParams); err != nil {
 		return nil, err
 	}
 
@@ -28,9 +33,14 @@ func (e *Environment) RenewableEnergySources(ctx context.Context) ([]*types.Rene
 }
 
 // EnergySystemLoad retrieves data for energy system load for Greece.
-func (e *Environment) EnergySystemLoad(ctx context.Context) ([]*types.EnergySystemLoad, error) {
+func (e *Environment) EnergySystemLoad(ctx context.Context, params ...QueryParameter) ([]*types.EnergySystemLoad, error) {
+	queryParams := make(map[string]string)
+	for _, param := range params {
+		param(queryParams)
+	}
+
 	response := make([]*types.EnergySystemLoad, 0)
-	if err := e.client.MakeRequestGET(ctx, "admie_realtimescadasystemload", &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "admie_realtimescadasystemload", &response, queryParams); err != nil {
 		return nil, err
 	}
 
@@ -38,9 +48,14 @@ func (e *Environment) EnergySystemLoad(ctx context.Context) ([]*types.EnergySyst
 }
 
 // EnergyBalance retrieves data for energy balance analysis for Greece.
-func (e *Environment) EnergyBalance(ctx context.Context) ([]*types.EnergyBalance, error) {
+func (e *Environment) EnergyBalance(ctx context.Context, params ...QueryParameter) ([]*types.EnergyBalance, error) {
+	queryParams := make(map[string]string)
+	for _, param := range params {
+		param(queryParams)
+	}
+
 	response := make([]*types.EnergyBalance, 0)
-	if err := e.client.MakeRequestGET(ctx, "admie_dailyenergybalanceanalysis", &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "admie_dailyenergybalanceanalysis", &response, queryParams); err != nil {
 		return nil, err
 	}
 
@@ -48,9 +63,14 @@ func (e *Environment) EnergyBalance(ctx context.Context) ([]*types.EnergyBalance
 }
 
 // ElectricityConsumption retrieves data for electricity consumption in Greece.
-func (e *Environment) ElectricityConsumption(ctx context.Context) ([]*types.ElectricityConsumption, error) {
+func (e *Environment) ElectricityConsumption(ctx context.Context, params ...QueryParameter) ([]*types.ElectricityConsumption, error) {
+	queryParams := make(map[string]string)
+	for _, param := range params {
+		param(queryParams)
+	}
+
 	response := make([]*types.ElectricityConsumption, 0)
-	if err := e.client.MakeRequestGET(ctx, "electricity_consumption", &response); err != nil {
+	if err := e.client.MakeRequestGET(ctx, "electricity_consumption", &response, queryParams); err != nil {
 		return nil, err
 	}
 

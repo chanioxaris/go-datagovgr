@@ -50,7 +50,7 @@ func TestTelcos_IndicatorsAndStatistics_Error(t *testing.T) {
 
 	_, err := fixture.API.Telcos.IndicatorsAndStatistics(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {

@@ -50,7 +50,7 @@ func TestCrimeJustice_TrafficAccidents_Error(t *testing.T) {
 
 	_, err := fixture.API.CrimeJustice.TrafficAccidents(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -97,7 +97,7 @@ func TestCrimeJustice_RescueOperations_Error(t *testing.T) {
 
 	_, err := fixture.API.CrimeJustice.RescueOperations(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -144,7 +144,7 @@ func TestCrimeJustice_TrafficViolations_Error(t *testing.T) {
 
 	_, err := fixture.API.CrimeJustice.TrafficViolations(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -191,7 +191,7 @@ func TestCrimeJustice_CrimeStatistics_Error(t *testing.T) {
 
 	_, err := fixture.API.CrimeJustice.CrimeStatistics(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -238,7 +238,7 @@ func TestCrimeJustice_FinancialCrimes_Error(t *testing.T) {
 
 	_, err := fixture.API.CrimeJustice.FinancialCrimes(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -285,7 +285,7 @@ func TestCrimeJustice_NumberOfLawyers_Error(t *testing.T) {
 
 	_, err := fixture.API.CrimeJustice.NumberOfLawyers(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {
@@ -332,7 +332,7 @@ func TestCrimeJustice_NumberOfLawFirms_Error(t *testing.T) {
 
 	_, err := fixture.API.CrimeJustice.NumberOfLawFirms(ctx)
 	if err == nil {
-		t.Fatalf("Expected error, but got nil")
+		t.Fatal("Expected error, but got nil")
 	}
 
 	if !strings.Contains(err.Error(), expectedError) {

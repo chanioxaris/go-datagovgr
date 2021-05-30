@@ -32,13 +32,68 @@ func TestClient_MakeRequestGET_Success(t *testing.T) {
 	)
 
 	payload := testPayload{}
-	err := fixture.InternalClient.MakeRequestGET(ctx, fixture.TestPath, &payload)
+	err := fixture.InternalClient.MakeRequestGET(ctx, fixture.TestPath, &payload, nil)
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
 
 	if !reflect.DeepEqual(payload, expectedPayload) {
 		t.Fatalf("Expected payload %+v, but got %+v", expectedPayload, payload)
+	}
+}
+
+func TestClient_MakeRequestGET_QueryParameters_Success(t *testing.T) {
+	ctx := context.Background()
+	fixture := datagovgrtest.NewFixture(t)
+	expectedPayload := testPayload{Author: "chanioxaris"}
+
+	tests := []struct {
+		name  string
+		query map[string]string
+	}{
+		{
+			name: "HTTP request with date_from query parameter",
+			query: map[string]string{
+				"date_from": "2009-01-03",
+			},
+		},
+		{
+			name: "HTTP request with date_to query parameter",
+			query: map[string]string{
+				"date_to": "2009-01-03",
+			},
+		},
+		{
+			name: "HTTP request with date_from and date_to query parameters",
+			query: map[string]string{
+				"date_from": "2009-01-03",
+				"date_to":   "2009-01-04",
+			},
+		},
+	}
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			httpmock.RegisterResponderWithQuery(
+				http.MethodGet,
+				fmt.Sprintf("%s/%s", fixture.BaseURL, fixture.TestPath),
+				tt.query,
+				httpmock.NewJsonResponderOrPanic(http.StatusOK, expectedPayload),
+			)
+
+			payload := testPayload{}
+			err := fixture.InternalClient.MakeRequestGET(ctx, fixture.TestPath, &payload, tt.query)
+			if err != nil {
+				t.Fatalf("Unexpected error %v", err)
+			}
+
+			if !reflect.DeepEqual(payload, expectedPayload) {
+				t.Fatalf("Expected payload %+v, but got %+v", expectedPayload, payload)
+			}
+		})
 	}
 }
 
@@ -91,7 +146,7 @@ func TestClient_MakeRequestGET_Error(t *testing.T) {
 			)
 
 			payload := testPayload{}
-			err := fixture.InternalClient.MakeRequestGET(tt.ctx, tt.path, &payload)
+			err := fixture.InternalClient.MakeRequestGET(tt.ctx, tt.path, &payload, nil)
 			if err == nil {
 				t.Fatal("Expected error, but got nil")
 			}
@@ -123,7 +178,7 @@ func TestClient_MakeRequestGET_Error_Timeout(t *testing.T) {
 	)
 
 	payload := testPayload{}
-	err := fixture.InternalClient.MakeRequestGET(ctx, fixture.TestPath, &payload)
+	err := fixture.InternalClient.MakeRequestGET(ctx, fixture.TestPath, &payload, nil)
 	if err == nil {
 		t.Fatal("Expected error, but got nil")
 	}

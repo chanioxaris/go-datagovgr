@@ -25,8 +25,8 @@ func New(httpClient *http.Client, baseURL, apiToken string) *Client {
 }
 
 // MakeRequestGET makes a GET http request to the API and populates the provided payload.
-func (c *Client) MakeRequestGET(ctx context.Context, path string, payload interface{}) error {
-	req, err := c.newRequest(ctx, http.MethodGet, path, nil)
+func (c *Client) MakeRequestGET(ctx context.Context, path string, payload interface{}, queryParams map[string]string) error {
+	req, err := c.newRequest(ctx, http.MethodGet, path, nil, queryParams)
 	if err != nil {
 		return err
 	}
@@ -35,7 +35,7 @@ func (c *Client) MakeRequestGET(ctx context.Context, path string, payload interf
 }
 
 // newRequest creates a new http request with the provided parameters.
-func (c *Client) newRequest(ctx context.Context, method, path string, body io.Reader) (*http.Request, error) {
+func (c *Client) newRequest(ctx context.Context, method, path string, body io.Reader, queryParams map[string]string) (*http.Request, error) {
 	req, err := http.NewRequestWithContext(ctx, method, fmt.Sprintf("%s/%s", c.baseURL, path), body)
 	if err != nil {
 		return nil, err
@@ -43,6 +43,13 @@ func (c *Client) newRequest(ctx context.Context, method, path string, body io.Re
 
 	// Add Authorization header to request.
 	req.Header.Set("Authorization", fmt.Sprintf("Token %s", c.apiToken))
+
+	// Add any query parameters to request.
+	q := req.URL.Query()
+	for key, value := range queryParams {
+		q.Add(key, value)
+	}
+	req.URL.RawQuery = q.Encode()
 
 	return req, nil
 }
